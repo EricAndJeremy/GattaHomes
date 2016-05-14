@@ -15,12 +15,11 @@ public class BeaconListener extends Application implements BeaconManager.Monitor
     private Region region;
     public int ID;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    public BeaconListener() {
         ID = 0;
         beaconManager = new BeaconManager(getApplicationContext());
         beaconManager.setBackgroundScanPeriod(5000, 5000);
+        beaconManager.setMonitoringListener(this);
         region = new Region("Gatta Home Showcase", UUID.fromString("0C22AC37-4957-55F7-AAF6-9579F324E008"), null, null);
         beaconManager.connect(this);
     }
