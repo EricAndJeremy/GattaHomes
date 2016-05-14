@@ -1,6 +1,7 @@
 package www.jeranderic.gattahomes;
 
 import android.app.Activity;
+import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -15,15 +16,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.estimote.sdk.Beacon;
+import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.Region;
 import com.estimote.sdk.SystemRequirementsChecker;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class Display extends Activity {
 
     ArrayList<RoomElement> elements;
     BeaconListener b;
+    private BeaconManager beaconManager;
+    private Region region;
+    public int ID;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,12 +47,13 @@ public class Display extends Activity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
         getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
-
-        b = new BeaconListener(getApplicationContext());
+        Toast.makeText(this, "got here",
+                Toast.LENGTH_SHORT).show();
+        beaconManager = new BeaconManager(this);
+        b = new BeaconListener(beaconManager);
 
         setUp();
-
-        startListening();
+        //startListening();
     }
 
     @Override
@@ -78,11 +88,14 @@ public class Display extends Activity {
 
     public void startListening() {
         int current_group_id = 100000;
+
         int temp;
         while (true) {
             try {
                 Thread.sleep(4000);
-                temp = b.ID;
+                temp = this.ID;
+                Toast.makeText(this, current_group_id+"",
+                        Toast.LENGTH_SHORT).show();
                 if (current_group_id == 100000) {
                     current_group_id = temp;
                 } else {
