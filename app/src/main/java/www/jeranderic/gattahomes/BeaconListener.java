@@ -26,6 +26,8 @@ public class BeaconListener extends BeaconManager implements BeaconManager.Rangi
 
     @Override
     public void onBeaconsDiscovered(Region region, List<Beacon> list) {
-        this.setBeaconId(list.get(0).getMajor());
+        if (!list.isEmpty()) {
+            this.setBeaconId(list.get(0).getMajor());
+        }
     }
 }
