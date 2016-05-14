@@ -39,7 +39,7 @@ public class Display extends Activity {
 
         getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
 
-        b = new BeaconListener();
+        b = new BeaconListener(getApplicationContext());
 
         setUp();
 
