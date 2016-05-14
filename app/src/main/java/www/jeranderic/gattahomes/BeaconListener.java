@@ -12,6 +12,6 @@ public class BeaconListener {
 
     public int getID(){
         Random randy = new Random();
-        return randy.nextInt(4);
+        return randy.nextInt(3) + 1;
     }
 }

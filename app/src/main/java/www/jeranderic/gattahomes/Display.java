@@ -44,11 +44,6 @@ public class Display extends Activity {
      */
     public void setUp() {
         elements = new ArrayList<>();
-        //living room = group 0
-        elements.add(new RoomElement(0, 0, "/path/to/image0"));
-        elements.add(new RoomElement(0, 1, "/path/to/image1"));
-        elements.add(new RoomElement(0, 2, "/path/to/image2"));
-        elements.add(new RoomElement(0, 3, "/path/to/image3"));
         //master bedroom = group 1
         elements.add(new RoomElement(1, 0, "/path/to/image0"));
         elements.add(new RoomElement(1, 1, "/path/to/image1"));
