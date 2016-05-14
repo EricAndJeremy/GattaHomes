@@ -19,7 +19,7 @@ public class BeaconListener extends BeaconManager implements BeaconManager.Rangi
         this.beaconId = 0;
         this.setBackgroundScanPeriod(1000, 500);
         this.setRangingListener(this);
-        this.region = new Region("Gatta Home Showcase", UUID.fromString("0C22AC37-4957-55F7-AAF6-9579F324E008"), null, null)
+        this.region = new Region("Gatta Home Showcase", UUID.fromString("0C22AC37-4957-55F7-AAF6-9579F324E008"), null, null);
     }
 
     private void setBeaconId(int id) {
