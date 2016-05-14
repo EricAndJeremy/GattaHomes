@@ -6,39 +6,9 @@
     tools:context="www.jeranderic.gattahomes.Display"
     android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:weightSum="10">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="5"
-            android:layout_weight="0.3"
-            android:layout_margin="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
-                android:id="@+id/textView"
-                android:textColor="@color/abc_search_url_text_pressed" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="9"
-            android:background="@drawable/rounded"
-            android:layout_margin="10dp"
-            android:weightSum="10">
-        </LinearLayout>
-
-    </LinearLayout>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView" />
 
 </RelativeLayout>
