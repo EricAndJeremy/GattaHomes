@@ -1,6 +1,8 @@
 package www.jeranderic.gattahomes;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -9,8 +11,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.estimote.sdk.SystemRequirementsChecker;
+
+import java.io.File;
 import java.util.ArrayList;
 
 public class Display extends Activity {
@@ -37,6 +44,13 @@ public class Display extends Activity {
         setUp();
 
         startListening();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SystemRequirementsChecker.checkWithDefaultDialogs(this);
     }
 
     /**
@@ -68,13 +82,15 @@ public class Display extends Activity {
         while (true) {
             try {
                 Thread.sleep(4000);
-                temp = b.getID();
+                temp = b.ID;
                 if (current_group_id == 100000) {
                     current_group_id = temp;
                 } else {
                     if (current_group_id != temp) { //this means we picked up a new beacon
                         current_group_id = temp;
-                        updateDisplay();
+                        Toast.makeText(this, current_group_id+"",
+                                Toast.LENGTH_SHORT).show();
+                        //updateDisplay();
                     } else {
                         // do nothing, do not change display
                     }
@@ -86,14 +102,34 @@ public class Display extends Activity {
     }
 
     public void updateDisplay() {
-        View listview =  findViewById(R.id.listView);
+        View listview = findViewById(R.id.listView);
 
-        LinearLayout button = new LinearLayout(this);
-        // specifying vertical orientation
-        button.setOrientation(LinearLayout.HORIZONTAL);
-        // creating LayoutParams
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
-        button.setLayoutParams(params);
+        LinearLayout group = new LinearLayout(this);
+        group.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout button;
+
+        ImageView img;
+
+        for (int i = 0; i < elements.size(); i++) {
+            button = new LinearLayout(this);
+            // specifying vertical orientation
+            button.setOrientation(LinearLayout.HORIZONTAL);
+            // creating LayoutParams
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+            button.setLayoutParams(params);
+            File imgFile = new File("/images/test.jpg");
+
+            img = new ImageView(this);
+            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+            //params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+            img.setLayoutParams(params);
+
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                img.setImageBitmap(myBitmap);
+            }
+        }
     }
 }
