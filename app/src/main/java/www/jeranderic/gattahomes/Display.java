@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ListViewCompat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +16,8 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.estimote.sdk.Beacon;
@@ -29,10 +33,10 @@ import java.util.UUID;
 public class Display extends Activity {
 
     ArrayList<RoomElement> elements;
-    BeaconListener b;
-    private BeaconManager beaconManager;
+
+    private BeaconListener beaconManager;
     private Region region;
-    public int ID;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,13 +51,24 @@ public class Display extends Activity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
         getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
-        Toast.makeText(this, "got here",
-                Toast.LENGTH_SHORT).show();
-        beaconManager = new BeaconManager(this);
-        b = new BeaconListener(beaconManager);
 
         setUp();
-        //startListening();
+
+        beaconManager = new BeaconListener(this);
+        beaconManager.setBackgroundScanPeriod(1000, 20);
+
+        region = new Region("Gatta Homes Showcase", UUID.fromString("0C22AC37-4957-55F7-AAF6-9579F324E008"), null, null);
+
+        beaconManager.setRangingListener(new BeaconManager.RangingListener() {
+            @Override
+            public void onBeaconsDiscovered(Region region, List<Beacon> list) {
+                if (!list.isEmpty()) {
+                    Beacon nearestBeacon = list.get(0);
+                    Log.d("beacon", "closest: " + nearestBeacon);
+                    updateDisplay(list.get(0).getMajor());
+                }
+            }
+        });
     }
 
     @Override
@@ -61,6 +76,20 @@ public class Display extends Activity {
         super.onResume();
 
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
+
+        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
+                beaconManager.startRanging(region);
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        beaconManager.stopRanging(region);
+
+        super.onPause();
     }
 
     /**
@@ -72,7 +101,6 @@ public class Display extends Activity {
         elements.add(new RoomElement(1, 0, "/path/to/image0"));
         elements.add(new RoomElement(1, 1, "/path/to/image1"));
         elements.add(new RoomElement(1, 2, "/path/to/image2"));
-        elements.add(new RoomElement(1, 3, "/path/to/image3"));
         //living room = group 2
         elements.add(new RoomElement(2, 0, "/path/to/image0"));
         elements.add(new RoomElement(2, 1, "/path/to/image1"));
@@ -93,15 +121,15 @@ public class Display extends Activity {
         while (true) {
             try {
                 Thread.sleep(4000);
-                temp = this.ID;
-                Toast.makeText(this, current_group_id+"",
+                temp = 1;
+                Toast.makeText(this, current_group_id + "",
                         Toast.LENGTH_SHORT).show();
                 if (current_group_id == 100000) {
                     current_group_id = temp;
                 } else {
                     if (current_group_id != temp) { //this means we picked up a new beacon
                         current_group_id = temp;
-                        Toast.makeText(this, current_group_id+"",
+                        Toast.makeText(this, current_group_id + "",
                                 Toast.LENGTH_SHORT).show();
                         //updateDisplay();
                     } else {
@@ -114,35 +142,33 @@ public class Display extends Activity {
         }
     }
 
-    public void updateDisplay() {
-        View listview = findViewById(R.id.listView);
-
+    public void updateDisplay(int beaconid) {
+        LinearLayout listview = (LinearLayout) findViewById(R.id.list);
+        listview.removeAllViews();
         LinearLayout group = new LinearLayout(this);
+        LinearLayout.LayoutParams gparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        group.setLayoutParams(gparams);
         group.setOrientation(LinearLayout.VERTICAL);
-
         LinearLayout button;
-
+        TextView text;
         ImageView img;
 
         for (int i = 0; i < elements.size(); i++) {
-            button = new LinearLayout(this);
-            // specifying vertical orientation
-            button.setOrientation(LinearLayout.HORIZONTAL);
-            // creating LayoutParams
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
-            button.setLayoutParams(params);
-            File imgFile = new File("/images/test.jpg");
-
-            img = new ImageView(this);
-            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
-            //params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
-            img.setLayoutParams(params);
-
-            if (imgFile.exists()) {
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                img.setImageBitmap(myBitmap);
+            if (elements.get(i).groupID == beaconid) {
+                button = new LinearLayout(this);
+                text = new TextView(this);
+                // specifying vertical orientation
+                button.setOrientation(LinearLayout.HORIZONTAL);
+                // creating LayoutParams
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+                button.setLayoutParams(params);
+                button.setBackgroundResource(R.drawable.rounded);
+                text.setText("id: " + elements.get(i).id);
+                button.addView(text);
+                group.addView(button);
             }
         }
+        listview.addView(group);
     }
 }
