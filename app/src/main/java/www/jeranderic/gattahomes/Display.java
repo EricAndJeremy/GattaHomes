@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ListViewCompat;
@@ -13,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +26,8 @@ import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.SystemRequirementsChecker;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -98,20 +102,20 @@ public class Display extends Activity {
     public void setUp() {
         elements = new ArrayList<>();
         //master bedroom = group 1
-        elements.add(new RoomElement(1, 0, "/path/to/image0"));
-        elements.add(new RoomElement(1, 1, "/path/to/image1"));
-        elements.add(new RoomElement(1, 2, "/path/to/image2"));
+        elements.add(new RoomElement(1, 0, "This is the title", "THIS IS THE DESCRIPTION!!!!", "/path/to/video"));
+        elements.add(new RoomElement(1, 1, "amsdnfkjasd", "deasdfmndkfjsc", "/path/to/video"));
+        elements.add(new RoomElement(1, 2, "jeremy sucks", "he sucks all of them", "/path/to/video"));
         //living room = group 2
-        elements.add(new RoomElement(2, 0, "/path/to/image0"));
-        elements.add(new RoomElement(2, 1, "/path/to/image1"));
-        elements.add(new RoomElement(2, 2, "/path/to/image2"));
-        elements.add(new RoomElement(2, 3, "/path/to/image3"));
+        elements.add(new RoomElement(2, 0, "jeremy sucks", "doesnt discriminate, loves all shapes and sizes", "/path/to/video"));
+        elements.add(new RoomElement(2, 1, "haha", "i made an app describing jeremy perfectly", "/path/to/video"));
+        elements.add(new RoomElement(2, 2, "wow", "much sucking wowowowow ", "/path/to/video"));
+        elements.add(new RoomElement(2, 3, "title", "desc", "/path/to/video"));
         //dining room = group 3
-        elements.add(new RoomElement(3, 0, "/path/to/image0"));
-        elements.add(new RoomElement(3, 1, "/path/to/image1"));
-        elements.add(new RoomElement(3, 2, "/path/to/image2"));
-        elements.add(new RoomElement(3, 3, "/path/to/image3"));
-        elements.add(new RoomElement(3, 4, "/path/to/image3"));
+        elements.add(new RoomElement(3, 0, "best app ever made", "deeeeeeescripppptionnnn", "/path/to/video"));
+        elements.add(new RoomElement(3, 1, "this is the best", "desc", "/path/to/video"));
+        elements.add(new RoomElement(3, 2, "ohhhhh herrooo!!", "-_- i love rice", "/path/to/video"));
+        elements.add(new RoomElement(3, 3, "Jeremy likes men", "tis all", "/path/to/video"));
+        elements.add(new RoomElement(3, 4, "the holy hand grenade", "thou shal counteth to three, you may count to two, so long as you continue on to three", "/path/to/video"));
     }
 
     public void startListening() {
@@ -144,6 +148,11 @@ public class Display extends Activity {
 
     public void updateDisplay(int beaconid) {
         LinearLayout listview = (LinearLayout) findViewById(R.id.list);
+
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final ImageView playbutton = (ImageView) findViewById(R.id.playbutton);
+        final LinearLayout bigview = (LinearLayout) findViewById(R.id.bigview);
+
         listview.removeAllViews();
         LinearLayout group = new LinearLayout(this);
         LinearLayout.LayoutParams gparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -164,11 +173,44 @@ public class Display extends Activity {
                 params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
                 button.setLayoutParams(params);
                 button.setBackgroundResource(R.drawable.rounded);
-                text.setText("id: " + elements.get(i).id);
+                text.setTextSize(25);
+                text.setText("id: " + elements.get(i).title);
                 button.addView(text);
+                final int tempid = elements.get(i).id;
+                final int tempgroupid = elements.get(i).groupID;
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateBigDisplay(tempgroupid, tempid);
+                        //show big view
+                        bigview.setVisibility(View.VISIBLE);
+                        fab.setVisibility(View.VISIBLE);
+                        playbutton.setVisibility(View.VISIBLE);
+                        fab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                fab.setVisibility(View.GONE);
+                                bigview.setVisibility(View.GONE);
+                                playbutton.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                });
                 group.addView(button);
             }
         }
         listview.addView(group);
+    }
+
+    public void updateBigDisplay(int groupID, int id) {
+        TextView title = (TextView) findViewById(R.id.title);
+        TextView description = (TextView) findViewById(R.id.description);
+
+        for (int i = 0; i < elements.size(); i++) {
+            if (elements.get(i).groupID == groupID && elements.get(i).id == id) {
+                title.setText(elements.get(i).title);
+                description.setText(elements.get(i).description);
+            }
+        }
     }
 }

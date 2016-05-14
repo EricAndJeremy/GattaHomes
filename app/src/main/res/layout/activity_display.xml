@@ -18,7 +18,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#deaaaa">
+        android:background="#deaaaa"
+        android:id="@+id/bigview"
+        android:visibility="gone">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -33,7 +35,7 @@
                 android:id="@+id/title"
                 android:textSize="50sp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp" />
+                android:layout_marginTop="50dp" />
 
 
         </LinearLayout>
@@ -52,7 +54,8 @@
                 android:lines="4"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
                 android:textColor="@color/abc_secondary_text_material_dark"
-                android:textSize="25sp"></TextView>
+                android:textSize="25sp"
+                android:layout_margin="15dp"></TextView>
         </LinearLayout>
 
     </LinearLayout>
@@ -70,5 +73,17 @@
         app:pressedTranslationZ="12dp"
         app:rippleColor="@android:color/transparent"
         android:layout_alignParentTop="true"
-        android:layout_margin="15dp" />
+        android:layout_margin="15dp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:id="@+id/playbutton"
+        android:layout_margin="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/play"
+        android:visibility="gone" />
 </RelativeLayout>
