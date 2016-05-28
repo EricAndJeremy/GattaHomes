@@ -13,12 +13,11 @@ public class RoomElement {
     /*
     * This constructor is for Info windows
     * */
-    public RoomElement(int groupID, int id, String title, String description, String videoURL) {
+    public RoomElement(int groupID, int id, String title, String description) {
         this.id = id;
         this.groupID = groupID;
         this.title = title;
         this.description = description;
-        this.videoURL = videoURL;
     }
 
     /*
