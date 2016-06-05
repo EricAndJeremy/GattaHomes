@@ -1,24 +1,14 @@
 package www.jeranderic.gattahomes;
 
 import android.app.Activity;
-import android.app.Application;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ListViewCompat;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +17,6 @@ import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.SystemRequirementsChecker;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -174,10 +161,53 @@ public class Display extends Activity {
                         });
                     }
                 });
+                playbutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateBigDisplay(tempgroupid, tempid);
+                        //show big view
+                        bigview.setVisibility(View.VISIBLE);
+                        fab.setVisibility(View.VISIBLE);
+                        playbutton.setVisibility(View.VISIBLE);
+                        playbutton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startVideo(tempgroupid, tempid);
+
+                            }
+                        });
+                        fab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                fab.setVisibility(View.GONE);
+                                bigview.setVisibility(View.GONE);
+                                playbutton.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                });
                 group.addView(button);
             }
         }
         listview.addView(group);
+    }
+
+    public void startVideo(int group, int id) {
+        RoomElement sent = getRoomElement(group, id);
+        Intent i = new Intent();
+        i.setClass(this, VideoPlayer.class);
+        i.putExtra("element-group", sent.groupID);
+        i.putExtra("element-id", sent.id);
+        startActivity(i);
+    }
+
+    public RoomElement getRoomElement(int group, int id) {
+        for (int i = 0; i < this.elements.size(); i++) {
+            if (this.elements.get(i).groupID == group && this.elements.get(i).id == id) {
+                return this.elements.get(i);
+            }
+        }
+        return null;
     }
 
     public void updateBigDisplay(int groupID, int id) {
