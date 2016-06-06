@@ -1,6 +1,7 @@
 package www.jeranderic.gattahomes;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -18,6 +19,7 @@ public class VideoPlayer extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_video_player);
@@ -37,7 +39,8 @@ public class VideoPlayer extends AppCompatActivity {
 
         try {
             this.myVideoView.setMediaController(this.mediaControls);
-            this.myVideoView.setVideoURI(Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.two));
+            int id = getResources().getIdentifier(intent.getStringExtra("video"), "raw", getPackageName());
+            this.myVideoView.setVideoURI(Uri.parse("android.resource://"+getPackageName()+"/"+id));
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();
