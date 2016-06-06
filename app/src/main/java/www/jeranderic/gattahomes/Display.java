@@ -196,8 +196,7 @@ public class Display extends Activity {
         RoomElement sent = getRoomElement(group, id);
         Intent i = new Intent();
         i.setClass(this, VideoPlayer.class);
-        i.putExtra("element-group", sent.groupID);
-        i.putExtra("element-id", sent.id);
+        i.putExtra("videopath", sent.groupID+"-"+sent.id);
         startActivity(i);
     }
 
