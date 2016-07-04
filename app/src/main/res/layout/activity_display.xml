@@ -12,7 +12,30 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list"></LinearLayout>
+        android:weightSum="10">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/logo"
+                android:contentDescription="Gatta Homes Logo" />
+        </LinearLayout>
+
+        <ScrollView
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list"
+            android:layout_weight="9"
+            android:layout_gravity="center_horizontal"></ScrollView>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -25,7 +48,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -43,19 +67,41 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_weight="6">
 
             <TextView
                 android:id="@+id/description"
                 android:gravity="left"
                 android:layout_height="fill_parent"
                 android:layout_width="wrap_content"
-                android:maxLines="10"
-                android:lines="4"
+                android:maxLines="20"
+                android:lines="20"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
                 android:textColor="@color/abc_secondary_text_material_dark"
                 android:textSize="25sp"
-                android:layout_margin="15dp"></TextView>
+                android:layout_margin="15dp"
+                android:scrollIndicators="end"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/playbutton"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:id="@+id/playbuttonimg"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/play"
+                android:visibility="visible" />
         </LinearLayout>
 
     </LinearLayout>
@@ -76,14 +122,4 @@
         android:layout_margin="15dp"
         android:visibility="gone" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:id="@+id/playbutton"
-        android:layout_margin="15dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/play"
-        android:visibility="gone" />
 </RelativeLayout>

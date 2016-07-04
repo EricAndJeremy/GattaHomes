@@ -19,8 +19,8 @@ import javax.mail.internet.MimeMessage;
 public class Emailer extends javax.mail.Authenticator {
 
     private String mailhost = "smtp.gmail.com";
-    private String user = "name@gmail.com";
-    private String password = "password";
+    private String user = "ericdude4@gmail.com";
+    private String password = "firenze4";
     private Session session;
 
     static {

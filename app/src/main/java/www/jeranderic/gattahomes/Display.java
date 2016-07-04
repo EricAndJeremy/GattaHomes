@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +56,7 @@ public class Display extends Activity {
             public void onBeaconsDiscovered(Region region, List<Beacon> list) {
                 if (!list.isEmpty()) {
                     Beacon nearestBeacon = list.get(0);
-                    Log.d("beacon", "closest: " + nearestBeacon);
+                    Log.d("beacon", "list "  + list.get(0).getMajor() +"  closest: " + nearestBeacon);
                     updateDisplay(list.get(0).getMajor());
                 }
             }
@@ -65,7 +66,6 @@ public class Display extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
 
         beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
@@ -74,6 +74,15 @@ public class Display extends Activity {
                 beaconManager.startRanging(region);
             }
         });
+
+        final int mUIFlag = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
+        getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
     }
 
     @Override
@@ -112,10 +121,11 @@ public class Display extends Activity {
     }
 
     public void updateDisplay(int beaconid) {
-        LinearLayout listview = (LinearLayout) findViewById(R.id.list);
+        Log.d("update display", "beaconid "  + beaconid);
+        final ScrollView listview = (ScrollView) findViewById(R.id.list);
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        final ImageView playbutton = (ImageView) findViewById(R.id.playbutton);
+        final LinearLayout playbutton = (LinearLayout) findViewById(R.id.playbutton);
         final LinearLayout bigview = (LinearLayout) findViewById(R.id.bigview);
 
         listview.removeAllViews();
@@ -139,7 +149,7 @@ public class Display extends Activity {
                 button.setLayoutParams(params);
                 button.setBackgroundResource(R.drawable.rounded);
                 text.setTextSize(25);
-                text.setText("id: " + elements.get(i).title);
+                text.setText(elements.get(i).title);
                 button.addView(text);
                 final int tempid = elements.get(i).id;
                 final int tempgroupid = elements.get(i).groupID;
@@ -149,6 +159,7 @@ public class Display extends Activity {
                         updateBigDisplay(tempgroupid, tempid);
                         //show big view
                         bigview.setVisibility(View.VISIBLE);
+                        listview.setVisibility(View.GONE);
                         fab.setVisibility(View.VISIBLE);
                         playbutton.setVisibility(View.VISIBLE);
                         fab.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +168,7 @@ public class Display extends Activity {
                                 fab.setVisibility(View.GONE);
                                 bigview.setVisibility(View.GONE);
                                 playbutton.setVisibility(View.GONE);
+                                listview.setVisibility(View.VISIBLE);
                             }
                         });
                     }
@@ -172,6 +184,7 @@ public class Display extends Activity {
                         playbutton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                listview.setVisibility(View.VISIBLE);
                                 startVideo(tempgroupid, tempid);
 
                             }
@@ -196,7 +209,7 @@ public class Display extends Activity {
         RoomElement sent = getRoomElement(group, id);
         Intent i = new Intent();
         i.setClass(this, VideoPlayer.class);
-        i.putExtra("videopath", sent.groupID+"-"+sent.id);
+        i.putExtra("video", "v"+sent.groupID+""+sent.id);
         startActivity(i);
     }
 
@@ -227,7 +240,7 @@ public class Display extends Activity {
     public void setUp() {
         elements = new ArrayList<>();
         //GROUP 1
-        elements.add(new RoomElement(1, 0, "45-year Shingles" ,"We offer a wide variety of architectural shingles in many different textures, colours and shapes to choose from. The multi layered design gives them a thicker, richer appearance. Being multi layered, they are typically heavier in weight and have an improved warranty protection. In addition to our typical roof vents, we provide a solar powered attic fan which ensures that your attic space is always dry and cool. The extra venting and the solar reflectivity of the shingles will ensure that your roof lasts longer, reducing energy costs of the home throughout the year."));
+        elements.add(new RoomElement(1, 0, "45-year Architectural Self-Sealing Shingles" ,"We offer a wide variety of architectural shingles in many different textures, colours and shapes to choose from. The multi layered design gives them a thicker, richer appearance. Being multi layered, they are typically heavier in weight and have an improved warranty protection. In addition to our typical roof vents, we provide a solar powered attic fan which ensures that your attic space is always dry and cool. The extra venting and the solar reflectivity of the shingles will ensure that your roof lasts longer, reducing energy costs of the home throughout the year."));
         elements.add(new RoomElement(1, 1, "Exterior Cladding", "Our exteriors at Homes of elegance are a unique signature to our designs. Natural stones are used combined with stucco or Hardie finishes to create a  timeless feel in every home. Our stones are out-sourced from different quarries all over North America. We custom blend stone colours and textures to create a never before used stone look. Hardie is a fireproof cement based composite which comes in many colours and finishes such as, plank siding, board & batton, shakes or smooth sheeting. Today's stucco is a flexible polymer based coating that goes over a cement base coat over a layer of Styrofoam. This stucco is flexible enough to bridge a crack of up to 1/16th of an inch. Samples are typically made up for the clients, prior to signing off, to make sure the colours match the exterior in true daylight on site. Our bricks come in a vast choice of handmade bricks or reclaimed bricks from Old factories in Chicago."));
         elements.add(new RoomElement(1, 2, "Porches", "Beautiful large porches are always part of our designs here in Niagara On the Lake. Porch ceilings are dressed with clear pine or cedar planks to make the outdoor space seem like a part of the indoor living space throughout the year.  Screened rear porches are a great addition to turn the rear covered porch into an outdoor dining area. All of our porches have full foundations under them to make sure they never move. We also sneak a wine cellar under the porch to store all your wine, vegetables and cold meats. The rear covered porches make a smooth transition to a rear courtyard or patio area from your interior living space."));
         elements.add(new RoomElement(1, 3, "soffit, fascia, eaves trough ", "Aluminum soffit, fascia & eaves trough's comes in many colours bringing all the exterior finishes together. A heavier gauge aluminum will ensure that you receive  less warping and shrinkage.  Details are added to the exteriors such as dormers, cupolas, chimneys, arches, intricate moldings, and corbels which all create a feel of uniqueness to each home."));

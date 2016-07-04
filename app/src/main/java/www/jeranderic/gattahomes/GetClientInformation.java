@@ -34,12 +34,12 @@ public class GetClientInformation extends AppCompatActivity {
     /**
      * the user has pressed the continue button, save info then continue to virtual tour
      */
-    public void cont() {
+    public void cont(View v) {
         TextView nameview = (TextView) findViewById(R.id.name);
         TextView emailview = (TextView) findViewById(R.id.email);
 
-        name = (String) nameview.getText();
-        email = (String) emailview.getText();
+        name = nameview.getText() + "";
+        email = emailview.getText() + "";
 
         File file = getFileStreamPath("test.txt");
 
@@ -73,7 +73,6 @@ public class GetClientInformation extends AppCompatActivity {
             //email failed to send
             e1.printStackTrace();
         }
-
         Intent i = new Intent();
         i.setClass(this, Display.class);
         i.putExtra("name", name);
