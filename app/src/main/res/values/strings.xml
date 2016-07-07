@@ -6,6 +6,8 @@
     <!-- Strings related to login -->
     <string name="prompt_name">Name</string>
     <string name="prompt_email">E-mail</string>
+    <string name="which_city">What city do you currently live in?</string>
+    <string name="when_moving">When do you plan on moving?</string>
     <string name="action_continue">Continue</string>
     <string name="action_skip">Skip this...</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -15,4 +17,12 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string-array name="move_dates">
+        <item>When are you moving?</item>
+        <item>Immediately</item>
+        <item>In 8 to 12 months</item>
+        <item>In 1 to 2 years</item>
+        <item>In 2 to 5 years</item>
+        <item>Just curious!</item>
+    </string-array>
 </resources>
