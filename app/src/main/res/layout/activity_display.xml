@@ -41,9 +41,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#deaaaa"
         android:id="@+id/bigview"
-        android:visibility="gone">
+        android:visibility="visible"
+        android:layout_marginTop="250dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -59,7 +59,9 @@
                 android:id="@+id/title"
                 android:textSize="50sp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="50dp" />
+                android:layout_marginTop="50dp"
+                android:lines="3"
+                android:maxLines="5" />
 
 
         </LinearLayout>
@@ -68,7 +70,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="6">
+            android:layout_weight="7">
 
             <TextView
                 android:id="@+id/description"

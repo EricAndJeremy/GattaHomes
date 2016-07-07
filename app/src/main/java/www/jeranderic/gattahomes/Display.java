@@ -75,6 +75,9 @@ public class Display extends Activity {
         super.onResume();
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
 
+        final LinearLayout bigview = (LinearLayout) findViewById(R.id.bigview);
+        bigview.setVisibility(View.GONE);
+
         beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
@@ -156,7 +159,7 @@ public class Display extends Activity {
                 button.setLayoutParams(params);
                 button.setBackgroundResource(R.drawable.rounded);
                 text.setTextSize(25);
-                text.setText(elements.get(i).title);
+                text.setText("      "+elements.get(i).title);
                 button.addView(text);
                 final int tempid = elements.get(i).id;
                 final int tempgroupid = elements.get(i).groupID;
