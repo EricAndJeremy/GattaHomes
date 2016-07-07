@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.EstimoteSDK;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.SystemRequirementsChecker;
 
@@ -34,6 +35,12 @@ public class Display extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
+
+        SystemRequirementsChecker.checkWithDefaultDialogs(this);
+
+        EstimoteSDK.initialize(this, "GattaHomes", "GattaToken");
+        // Optional, debug logging.
+        EstimoteSDK.enableDebugLogging(true);
 
         final int mUIFlag = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
