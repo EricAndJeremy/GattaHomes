@@ -8,6 +8,11 @@
     <string name="prompt_email">E-mail</string>
     <string name="which_city">What city do you currently live in?</string>
     <string name="when_moving">When do you plan on moving?</string>
+    <string name="what_house">What type of home are you looking for?</string>
+    <string name="house_size">What size of home are you looking for?</string>
+    <string name="num_rooms">How many bedrooms would you like?</string>
+    <string name="lot_size">What size lot would you like?</string>
+    <string name="budget">What is your budget?</string>
     <string name="action_continue">Continue</string>
     <string name="action_skip">Skip this...</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -24,5 +29,53 @@
         <item>In 1 to 2 years</item>
         <item>In 2 to 5 years</item>
         <item>Just curious!</item>
+    </string-array>
+    <string-array name="house_types">
+        <item>Bungalow (Single Family)</item>
+        <item>Bungalow, Finished Basement (Single Family)</item>
+        <item>Bungalow / Loft (Single Family)</item>
+        <item>Two Storey (Single Family)</item>
+        <item>Bungalow (Townhouse)</item>
+        <item>Bungalow, Finished Basement (Townhouse)</item>
+    </string-array>
+    <string-array name="home_size">
+        <item>1500 to 1800 sq ft</item>
+        <item>1800 to 2000 sq ft</item>
+        <item>2000 to 2200 sq ft</item>
+        <item>2200 to 2400 sq ft</item>
+        <item>2400 to 3000 sq ft</item>
+        <item>3000 to 3500 sq ft</item>
+        <item>3500+ sq ft</item>
+    </string-array>
+    <string-array name="room_nums">
+        <item>1 Rooms</item>
+        <item>2 Rooms</item>
+        <item>3 Rooms</item>
+        <item>4 Rooms</item>
+        <item>5 Rooms</item>
+        <item>5+ Rooms</item>
+    </string-array>
+    <string-array name="lot_sizes">
+        <item>1 Rooms</item>
+        <item>2 Rooms</item>
+        <item>3 Rooms</item>
+        <item>4 Rooms</item>
+        <item>5 Rooms</item>
+        <item>5+ Rooms</item>
+    </string-array>
+    <string-array name="budgets">
+        <item>1 Rooms</item>
+        <item>2 Rooms</item>
+        <item>3 Rooms</item>
+        <item>4 Rooms</item>
+        <item>5 Rooms</item>
+        <item>5+ Rooms</item>
+    </string-array>
+    <string-array name="budgets">
+        <item>800k to 900k</item>
+        <item>900k to 1.0 Mil</item>
+        <item>1.0 Mil to 1.2 Mil</item>
+        <item>1.2 Mil to 1.4 Mil</item>
+        <item>1.4 Mil+</item>
     </string-array>
 </resources>

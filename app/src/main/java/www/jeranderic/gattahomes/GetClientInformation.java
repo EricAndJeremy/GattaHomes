@@ -25,11 +25,40 @@ public class GetClientInformation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_client_information);
-        Spinner spin = (Spinner) findViewById(R.id.move);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.move_dates, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        if (spin != null) {
-            spin.setAdapter(adapter);
+        Spinner movingTime = (Spinner) findViewById(R.id.move);
+        Spinner houseType = (Spinner) findViewById(R.id.house_type);
+        Spinner houseSizeType = (Spinner) findViewById(R.id.house_size);
+        Spinner roomNumType = (Spinner) findViewById(R.id.num_rooms);
+        Spinner lotSizeType = (Spinner) findViewById(R.id.lot_size);
+        Spinner budgetType = (Spinner) findViewById(R.id.budget);
+        ArrayAdapter<CharSequence> budgetAdapter = ArrayAdapter.createFromResource(this, R.array.budgets, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> lotSizeAdapter = ArrayAdapter.createFromResource(this, R.array.lot_sizes, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> numRoomAdapter = ArrayAdapter.createFromResource(this, R.array.room_nums, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> houseSizeAdapter = ArrayAdapter.createFromResource(this, R.array.home_size, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> houseAdapter = ArrayAdapter.createFromResource(this, R.array.house_types, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> moveAdapter = ArrayAdapter.createFromResource(this, R.array.move_dates, android.R.layout.simple_spinner_item);
+        moveAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        houseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        numRoomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lotSizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        budgetAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if (movingTime != null) {
+            movingTime.setAdapter(moveAdapter);
+        }
+        if (houseType != null) {
+            houseType.setAdapter(houseAdapter);
+        }
+        if (houseSizeType != null) {
+            houseSizeType.setAdapter(houseSizeAdapter);
+        }
+        if (roomNumType != null) {
+            roomNumType.setAdapter(numRoomAdapter);
+        }
+        if (lotSizeType != null) {
+            lotSizeType.setAdapter(lotSizeAdapter);
+        }
+        if (budgetType != null) {
+            budgetType.setAdapter(budgetAdapter);
         }
         // Set up the login form.
     }
