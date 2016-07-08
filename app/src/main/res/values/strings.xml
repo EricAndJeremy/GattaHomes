@@ -63,7 +63,7 @@
         <item>5 Rooms</item>
         <item>5+ Rooms</item>
     </string-array>
-    <string-array name="budgets">
+    <string-array name="num_rooms">
         <item>1 Rooms</item>
         <item>2 Rooms</item>
         <item>3 Rooms</item>
