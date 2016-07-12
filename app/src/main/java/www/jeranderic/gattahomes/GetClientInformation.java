@@ -3,6 +3,8 @@ package www.jeranderic.gattahomes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
@@ -80,6 +82,32 @@ public class GetClientInformation extends AppCompatActivity {
         Spinner budget = (Spinner) findViewById(R.id.budget);
         RadioGroup updates = (RadioGroup) findViewById(R.id.updates);
 
+        boolean inValid = false;
+
+        if (name.getText().toString().isEmpty()) {
+            name.setError("Name cannot be empty.");
+            inValid = true;
+        }
+
+        if (!isValidEmail(email.getText())) {
+            email.setError("Email cannot be empty and must be a valid email address.");
+            inValid = true;
+        }
+
+        if (!isValidPhoneNumber(phoneNumber.getText())) {
+            phoneNumber.setError("Phone Number cannot be empty and must be a valid phone number.");
+            inValid = true;
+        }
+
+        if (city.getText().toString().isEmpty()) {
+            city.setError("City cannot be empty");
+            inValid = true;
+        }
+
+        if (inValid) {
+            return;
+        }
+
         File file = getFileStreamPath("test.txt");
 
         if (!file.exists()) {
@@ -130,6 +158,14 @@ public class GetClientInformation extends AppCompatActivity {
         i.putExtra("name", name.getText().toString());
         i.putExtra("email", email.getText().toString());
         startActivity(i);
+    }
+
+    private boolean isValidPhoneNumber(CharSequence text) {
+        return !TextUtils.isEmpty(text) && Patterns.PHONE.matcher(text).matches();
+    }
+
+    private boolean isValidEmail(CharSequence text) {
+        return !TextUtils.isEmpty(text) && Patterns.EMAIL_ADDRESS.matcher(text).matches();
     }
 
     /**
