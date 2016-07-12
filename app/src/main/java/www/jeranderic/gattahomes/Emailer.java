@@ -18,14 +18,14 @@ import javax.mail.internet.MimeMessage;
 
 public class Emailer extends javax.mail.Authenticator {
 
-    private String mailhost = "smtp.gmail.com";
-    private String user = "ericdude4@gmail.com";
-    private String password = "********";
-    private Session session;
-
     static {
         Security.addProvider(new JSSEProvider());
     }
+
+    private String mailhost = "smtp.gmail.com";
+    private String user = "gattatablets@gmail.com";
+    private String password = "**********";
+    private Session session;
 
     public Emailer() {
         Properties props = new Properties();

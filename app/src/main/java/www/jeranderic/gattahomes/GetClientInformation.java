@@ -2,18 +2,17 @@ package www.jeranderic.gattahomes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * A screen that accepts user information and writes it to a log file before continuing on to
@@ -26,6 +25,8 @@ public class GetClientInformation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_get_client_information);
         Spinner movingTime = (Spinner) findViewById(R.id.move);
         Spinner houseType = (Spinner) findViewById(R.id.house_type);
@@ -82,9 +83,11 @@ public class GetClientInformation extends AppCompatActivity {
         Spinner budget = (Spinner) findViewById(R.id.budget);
         RadioGroup updates = (RadioGroup) findViewById(R.id.updates);
 
+        RadioButton updateSel = (RadioButton) findViewById(updates.getCheckedRadioButtonId());
+
         boolean inValid = false;
 
-        if (name.getText().toString().isEmpty()) {
+        if (name.getText().toString().length() < 5) {
             name.setError("Name cannot be empty.");
             inValid = true;
         }
@@ -94,40 +97,18 @@ public class GetClientInformation extends AppCompatActivity {
             inValid = true;
         }
 
-        if (!isValidPhoneNumber(phoneNumber.getText())) {
-            phoneNumber.setError("Phone Number cannot be empty and must be a valid phone number.");
+        if (!isValidPhoneNumber(phoneNumber.getText()) && phoneNumber.getText().toString().length() < 10) {
+            phoneNumber.setError("Phone Number cannot be empty and must be a valid phone number at least 10 digits long.");
             inValid = true;
         }
 
-        if (city.getText().toString().isEmpty()) {
-            city.setError("City cannot be empty");
+        if (city.getText().toString().length() < 5) {
+            city.setError("City cannot be empty and must be at least 5 characters long.");
             inValid = true;
         }
 
         if (inValid) {
             return;
-        }
-
-        File file = getFileStreamPath("test.txt");
-
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter writer = new FileWriter(file);
-            writer.append("here");
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         String emailString = "";
@@ -141,14 +122,16 @@ public class GetClientInformation extends AppCompatActivity {
         emailString += "Number of Rooms: " + numRooms.getSelectedItem().toString() + ".\n";
         emailString += "Lot Size: " + lotSize.getSelectedItem().toString() + ".\n";
         emailString += "Budget: " + budget.getSelectedItem().toString() + ".\n";
-        emailString += "Send Updates: " + findViewById(updates.getCheckedRadioButtonId()).toString() + ".\n";
+        emailString += "Send Updates: " + updateSel.getText().toString() + ".\n";
+
+        Log.i(TAG, emailString);
 
         Emailer e = new Emailer();
         try {
             e.sendMail("Virtual Tour Participant",
                     emailString,
                     "virtualtour@gattahomes.com",
-                    "eric_froese2@hotmail.com");
+                    "fireynis@gmail.com");
         } catch (Exception e1) {
             //email failed to send
             e1.printStackTrace();
