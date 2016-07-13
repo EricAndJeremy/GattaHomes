@@ -2,11 +2,13 @@ package www.jeranderic.gattahomes;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -74,9 +76,13 @@ public class Display extends Activity {
     protected void onResume() {
         super.onResume();
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
+        setUp();
 
         final LinearLayout bigview = (LinearLayout) findViewById(R.id.bigview);
         bigview.setVisibility(View.GONE);
+
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
 
         beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
@@ -97,7 +103,8 @@ public class Display extends Activity {
 
     @Override
     protected void onPause() {
-        beaconManager.stopRanging(region);
+        //beaconManager.stopRanging(region);
+
 
         super.onPause();
     }
@@ -135,7 +142,7 @@ public class Display extends Activity {
         final ScrollView listview = (ScrollView) findViewById(R.id.list);
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        final LinearLayout playbutton = (LinearLayout) findViewById(R.id.playbutton);
+        final Button playbutton = (Button) findViewById(R.id.playbutton);
         final LinearLayout bigview = (LinearLayout) findViewById(R.id.bigview);
 
         listview.removeAllViews();
@@ -143,11 +150,11 @@ public class Display extends Activity {
         LinearLayout.LayoutParams gparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         group.setLayoutParams(gparams);
         group.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout button;
         TextView text;
         ImageView img;
 
         for (int i = 0; i < elements.size(); i++) {
+            final LinearLayout button;
             if (elements.get(i).groupID == beaconid) {
                 button = new LinearLayout(this);
                 text = new TextView(this);
@@ -159,7 +166,8 @@ public class Display extends Activity {
                 button.setLayoutParams(params);
                 button.setBackgroundResource(R.drawable.rounded);
                 text.setTextSize(25);
-                text.setText("      "+elements.get(i).title);
+                text.setTextColor(Color.parseColor("#00646a"));
+                text.setText("                   "+elements.get(i).title);
                 button.addView(text);
                 final int tempid = elements.get(i).id;
                 final int tempgroupid = elements.get(i).groupID;
@@ -170,6 +178,7 @@ public class Display extends Activity {
                         //show big view
                         bigview.setVisibility(View.VISIBLE);
                         listview.setVisibility(View.GONE);
+                        button.setVisibility(View.GONE);
                         fab.setVisibility(View.VISIBLE);
                         playbutton.setVisibility(View.VISIBLE);
                         fab.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +188,7 @@ public class Display extends Activity {
                                 bigview.setVisibility(View.GONE);
                                 playbutton.setVisibility(View.GONE);
                                 listview.setVisibility(View.VISIBLE);
+                                button.setVisibility(View.VISIBLE);
                             }
                         });
                     }
@@ -224,9 +234,11 @@ public class Display extends Activity {
     }
 
     public RoomElement getRoomElement(int group, int id) {
+        RoomElement result = new RoomElement();
         for (int i = 0; i < this.elements.size(); i++) {
             if (this.elements.get(i).groupID == group && this.elements.get(i).id == id) {
-                return this.elements.get(i);
+                result = this.elements.get(i);
+                return result;
             }
         }
         return null;
