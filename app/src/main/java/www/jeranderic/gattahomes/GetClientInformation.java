@@ -2,15 +2,17 @@ package www.jeranderic.gattahomes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * A screen that accepts user information and writes it to a log file before continuing on to
@@ -18,18 +20,48 @@ import java.io.IOException;
  */
 public class GetClientInformation extends AppCompatActivity {
 
-    private String name;
-    private String email;
+    private static final String TAG = "GetClientInformation";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_get_client_information);
-        Spinner spin = (Spinner) findViewById(R.id.move);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.move_dates, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        if (spin != null) {
-            spin.setAdapter(adapter);
+        Spinner movingTime = (Spinner) findViewById(R.id.move);
+        Spinner houseType = (Spinner) findViewById(R.id.house_type);
+        Spinner houseSizeType = (Spinner) findViewById(R.id.house_size);
+        Spinner roomNumType = (Spinner) findViewById(R.id.num_rooms);
+        Spinner lotSizeType = (Spinner) findViewById(R.id.lot_size);
+        Spinner budgetType = (Spinner) findViewById(R.id.budget);
+        ArrayAdapter<CharSequence> budgetAdapter = ArrayAdapter.createFromResource(this, R.array.budgets, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> lotSizeAdapter = ArrayAdapter.createFromResource(this, R.array.lot_sizes, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> numRoomAdapter = ArrayAdapter.createFromResource(this, R.array.num_rooms, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> houseSizeAdapter = ArrayAdapter.createFromResource(this, R.array.home_size, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> houseAdapter = ArrayAdapter.createFromResource(this, R.array.house_types, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> moveAdapter = ArrayAdapter.createFromResource(this, R.array.move_dates, android.R.layout.simple_spinner_item);
+        moveAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        houseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        numRoomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lotSizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        budgetAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if (movingTime != null) {
+            movingTime.setAdapter(moveAdapter);
+        }
+        if (houseType != null) {
+            houseType.setAdapter(houseAdapter);
+        }
+        if (houseSizeType != null) {
+            houseSizeType.setAdapter(houseSizeAdapter);
+        }
+        if (roomNumType != null) {
+            roomNumType.setAdapter(numRoomAdapter);
+        }
+        if (lotSizeType != null) {
+            lotSizeType.setAdapter(lotSizeAdapter);
+        }
+        if (budgetType != null) {
+            budgetType.setAdapter(budgetAdapter);
         }
         // Set up the login form.
     }
@@ -38,49 +70,85 @@ public class GetClientInformation extends AppCompatActivity {
      * the user has pressed the continue button, save info then continue to virtual tour
      */
     public void cont(View v) {
-        TextView nameview = (TextView) findViewById(R.id.name);
-        TextView emailview = (TextView) findViewById(R.id.email);
 
-        name = nameview.getText() + "";
-        email = emailview.getText() + "";
+        TextView name = (TextView) findViewById(R.id.name);
+        TextView email = (TextView) findViewById(R.id.email);
+        TextView phoneNumber = (TextView) findViewById(R.id.phone);
+        TextView city = (TextView) findViewById(R.id.city);
+        Spinner moving = (Spinner) findViewById(R.id.move);
+        Spinner houseType = (Spinner) findViewById(R.id.house_type);
+        Spinner houseSize = (Spinner) findViewById(R.id.house_size);
+        Spinner numRooms = (Spinner) findViewById(R.id.num_rooms);
+        Spinner lotSize = (Spinner) findViewById(R.id.lot_size);
+        Spinner budget = (Spinner) findViewById(R.id.budget);
+        RadioGroup updates = (RadioGroup) findViewById(R.id.updates);
 
-        File file = getFileStreamPath("test.txt");
+        RadioButton updateSel = (RadioButton) findViewById(updates.getCheckedRadioButtonId());
 
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        boolean inValid = false;
+
+        if (name.getText().toString().length() < 5) {
+            name.setError("Name cannot be empty.");
+            inValid = true;
         }
 
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter writer = new FileWriter(file);
-            writer.append("here");
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!isValidEmail(email.getText())) {
+            email.setError("Email cannot be empty and must be a valid email address.");
+            inValid = true;
         }
+
+        if (!isValidPhoneNumber(phoneNumber.getText()) && phoneNumber.getText().toString().length() < 10) {
+            phoneNumber.setError("Phone Number cannot be empty and must be a valid phone number at least 10 digits long.");
+            inValid = true;
+        }
+
+        if (city.getText().toString().length() < 5) {
+            city.setError("City cannot be empty and must be at least 5 characters long.");
+            inValid = true;
+        }
+
+        if (inValid) {
+            return;
+        }
+
+        String emailString = "";
+        emailString += "Name: " + name.getText() + ".\n";
+        emailString += "Email: " + email.getText() + ".\n";
+        emailString += "Phone Number: " + phoneNumber.getText() + ".\n";
+        emailString += "City: " + city.getText() + ".\n";
+        emailString += "Moving: " + moving.getSelectedItem().toString() + ".\n";
+        emailString += "House Type: " + houseType.getSelectedItem().toString() + ".\n";
+        emailString += "House Size: " + houseSize.getSelectedItem().toString() + ".\n";
+        emailString += "Number of Rooms: " + numRooms.getSelectedItem().toString() + ".\n";
+        emailString += "Lot Size: " + lotSize.getSelectedItem().toString() + ".\n";
+        emailString += "Budget: " + budget.getSelectedItem().toString() + ".\n";
+        emailString += "Send Updates: " + updateSel.getText().toString() + ".\n";
+
+        Log.i(TAG, emailString);
 
         Emailer e = new Emailer();
         try {
             e.sendMail("Virtual Tour Participant",
-                    "Name: " + name + "\nE-mail: " + email,
+                    emailString,
                     "virtualtour@gattahomes.com",
-                    "eric_froese2@hotmail.com");
+                    "fireynis@gmail.com");
         } catch (Exception e1) {
             //email failed to send
             e1.printStackTrace();
         }
         Intent i = new Intent();
         i.setClass(this, Display.class);
-        i.putExtra("name", name);
-        i.putExtra("email", email);
+        i.putExtra("name", name.getText().toString());
+        i.putExtra("email", email.getText().toString());
         startActivity(i);
+    }
+
+    private boolean isValidPhoneNumber(CharSequence text) {
+        return !TextUtils.isEmpty(text) && Patterns.PHONE.matcher(text).matches();
+    }
+
+    private boolean isValidEmail(CharSequence text) {
+        return !TextUtils.isEmpty(text) && Patterns.EMAIL_ADDRESS.matcher(text).matches();
     }
 
     /**
