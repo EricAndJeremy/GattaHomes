@@ -102,8 +102,8 @@ public class GetClientInformation extends AppCompatActivity {
             inValid = true;
         }
 
-        if (city.getText().toString().length() < 5) {
-            city.setError("City cannot be empty and must be at least 5 characters long.");
+        if (city.getText().toString().length() < 3) {
+            city.setError("City cannot be empty and must be at least 3 characters long.");
             inValid = true;
         }
 
