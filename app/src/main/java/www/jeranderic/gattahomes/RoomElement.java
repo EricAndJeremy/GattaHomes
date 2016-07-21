@@ -5,7 +5,8 @@ package www.jeranderic.gattahomes;
  */
 public class RoomElement {
 
-    public int id, groupID;
+    public int id;
+    public String groupID;
     public String title, description, videoURL, imageURL;
 
     public RoomElement() {}
@@ -13,18 +14,17 @@ public class RoomElement {
     /*
     * This constructor is for Info windows
     * */
-    public RoomElement(int groupID, int id, String title, String description, String videoURL) {
+    public RoomElement(String groupID, int id, String title, String description) {
         this.id = id;
         this.groupID = groupID;
         this.title = title;
         this.description = description;
-        this.videoURL = videoURL;
     }
 
     /*
     * This constructor is for Info windows
     * */
-    public RoomElement(int groupID, int id, String imageURL) {
+    public RoomElement(String groupID, int id, String imageURL) {
         this.id = id;
         this.groupID = groupID;
         this.imageURL = imageURL;

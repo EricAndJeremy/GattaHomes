@@ -1,3 +1,73 @@
 <resources>
     <string name="app_name">GattaHomes</string>
+    <string name="title_activity_video_player">VideoPlayer</string>
+    <string name="title_activity_get_client_information">Lets Stay In Touch!</string>
+
+    <!-- Strings related to login -->
+    <string name="tour">Virtual Tour</string>
+    <string name="prompt_name">Name</string>
+    <string name="prompt_email">E-mail</string>
+    <string name="prompt_phone">Phone Number</string>
+    <string name="which_city">What city do you currently live in?</string>
+    <string name="when_moving">When do you plan on moving?</string>
+    <string name="what_house">What type of home are you looking for?</string>
+    <string name="house_size">What size of home are you looking for?</string>
+    <string name="num_rooms">How many bedrooms would you like?</string>
+    <string name="lot_size">What size lot would you like?</string>
+    <string name="budget">What is your budget?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="update_question">Do you want to receive updates on the project?</string>
+    <string name="action_continue">Continue</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string-array name="move_dates">
+        <item>Immediately</item>
+        <item>In 8 to 12 months</item>
+        <item>In 1 to 2 years</item>
+        <item>In 2 to 5 years</item>
+        <item>Just curious!</item>
+    </string-array>
+    <string-array name="house_types">
+        <item>Bungalow (Single Family)</item>
+        <item>Bungalow, Finished Basement (Single Family)</item>
+        <item>Bungalow / Loft (Single Family)</item>
+        <item>Two Storey (Single Family)</item>
+        <item>Bungalow (Townhouse)</item>
+        <item>Bungalow, Finished Basement (Townhouse)</item>
+    </string-array>
+    <string-array name="home_size">
+        <item>1500 to 1800 sq ft</item>
+        <item>1800 to 2000 sq ft</item>
+        <item>2000 to 2200 sq ft</item>
+        <item>2200 to 2400 sq ft</item>
+        <item>2400 to 3000 sq ft</item>
+        <item>3000 to 3500 sq ft</item>
+        <item>3500+ sq ft</item>
+    </string-array>
+    <string-array name="lot_sizes">
+        <item>Regular (40 x 90)</item>
+        <item>Large (60 x 115)</item>
+        <item>Extra Large (100 x 150)</item>
+    </string-array>
+    <string-array name="num_rooms">
+        <item>1 Rooms</item>
+        <item>2 Rooms</item>
+        <item>3 Rooms</item>
+        <item>4 Rooms</item>
+        <item>5 Rooms</item>
+        <item>5+ Rooms</item>
+    </string-array>
+    <string-array name="budgets">
+        <item>800k to 900k</item>
+        <item>900k to 1.0 Mil</item>
+        <item>1.0 Mil to 1.2 Mil</item>
+        <item>1.2 Mil to 1.4 Mil</item>
+        <item>1.4 Mil+</item>
+    </string-array>
 </resources>
